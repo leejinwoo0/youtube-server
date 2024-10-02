@@ -1,25 +1,26 @@
 package com.server.youtube.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Entity @Builder
+@Data @NoArgsConstructor @AllArgsConstructor
+@DynamicInsert
 public class Video {
 
     @Id
     @Column(name="video_code")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int videoCode;
 
     @Column(name="video_url")
-    private String videUrl;
+    private String videoUrl;
 
     @Column(name="video_img")
     private String videoImg;
@@ -34,8 +35,9 @@ public class Video {
     private LocalDateTime videoDate;
 
     @Column(name="video_desc")
-    private  String videoDesc;
+    private String videoDesc;
 
-    @Column(name="channel_code")
-    private int channelCode;
+    @ManyToOne
+    @JoinColumn(name="channel_code")
+    private Channel channel;
 }
