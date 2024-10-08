@@ -33,8 +33,10 @@ public class SecurityConfig {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
-                .oauth2Login(oauth2 -> oauth2.successHandler(handler))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/private/*").authenticated()
+                        .anyRequest().permitAll())
+                //.oauth2Login(oauth2 -> oauth2.successHandler(handler))
                 // 위에 문장은 구글 로그인때문에 넣음
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
